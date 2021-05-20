@@ -37,7 +37,8 @@ router.get("/login", (req, res, next) => {
 
 router.post('/login', (req, res, next) => {
   const { username, password } = req.body;
- 
+  console.log('SESSION =====> ', req.session);
+  
   if (username === '' || password === '') {
     res.render('auth/login', {
       errorMessage: 'Please enter both, email and password to login.'
@@ -58,5 +59,7 @@ router.post('/login', (req, res, next) => {
     })
     .catch(error => next(error));
 });
+
+
 
 module.exports = router;
