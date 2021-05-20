@@ -26,13 +26,13 @@ router.post("/signup", (req, res, next) => {
     .catch((error) => next(error));
 });
 
-router.get("/userProfile", (req, res, next) => {
-    res.render("users/user-profile");
-  })
-  .then((userFromDB) => {
-    console.log("Newly created user is: ", userFromDB);
-    res.redirect("/userProfile");
-  })
-  .catch((err) => next(err));
+// router.get("/userProfile", (req, res, next) => {
+//     res.render("users/user-profile");
+//   })
+//   .then((userFromDB) => {
+//     console.log("Newly created user is: ", userFromDB);
+//     res.redirect("/userProfile");
+//   })
+//   .catch((err) => next(err));
 
 module.exports = router;
