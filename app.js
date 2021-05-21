@@ -16,6 +16,9 @@ const app = express();
 // require database configuration
 require('./configs/db.config');
 
+// require session configuration
+require('./configs/session.config')(app);
+
 // Middleware Setup
 app.use(logger('dev'));
 app.use(express.json());
@@ -37,5 +40,11 @@ app.use('/', index);
 
 const auth = require('./routes/auth.routes');
 app.use('/', auth);
+
+const main = require('./routes/main.routes');
+app.use('/', main);
+
+const private = require('./routes/private.routes');
+app.use('/', private);
 
 module.exports = app;

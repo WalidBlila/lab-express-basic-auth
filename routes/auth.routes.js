@@ -28,35 +28,44 @@ router.post("/signup", (req, res, next) => {
 });
 
 router.get("/userProfile", (req, res, next) => {
-  res.render("users/user-profile");
+  res.render("users/user-profile", { userInSession: req.session.currentUser });
 });
 
 router.get("/login", (req, res, next) => {
   res.render("auth/login");
 });
 
-router.post('/login', (req, res, next) => {
+router.post("/login", (req, res, next) => {
   const { username, password } = req.body;
- 
-  if (username === '' || password === '') {
-    res.render('auth/login', {
-      errorMessage: 'Please enter both, email and password to login.'
+  console.log("SESSION =====> ", req.session);
+
+  if (username === "" || password === "") {
+    res.render("auth/login", {
+      errorMessage: "Please enter both, username and password to login.",
     });
     return;
   }
- 
+
   User.findOne({ username })
-    .then(user => {
+    .then((user) => {
       if (!user) {
-        res.render('auth/login', { errorMessage: 'Username is not registered. Try with other email.' });
+        res.render("auth/login", {
+          errorMessage: "Username is not registered. Try with other username.",
+        });
         return;
       } else if (bcryptjs.compareSync(password, user.passwordHash)) {
-        res.render('users/user-profile', { user });
+        req.session.currentUser = user;
+        res.redirect("/userProfile");
       } else {
-        res.render('auth/login', { errorMessage: 'Incorrect password.' });
+        res.render("auth/login", { errorMessage: "Incorrect password." });
       }
     })
-    .catch(error => next(error));
+    .catch((error) => next(error));
+});
+
+router.post('/logout', (req, res, next) => {
+  req.session.destroy();
+  res.redirect('/');
 });
 
 module.exports = router;
